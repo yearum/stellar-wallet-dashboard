@@ -1,20 +1,38 @@
-# Stellar Wallet Dashboard
+# 🚀 Stellar Wallet Dashboard
 
-A simple Stellar dApp that allows users to check account balances on the Stellar Testnet.
+A simple web-based dashboard built on the Stellar Testnet that allows users to check wallet balances and view recent transactions using the Stellar Horizon API.
 
-## Features
+## 📖 Overview
 
-- Check Stellar account balance
-- View account ID
-- View account status
+This project was developed as part of the **Stellar Journey to Mastery - White Belt Level Challenge**.
 
-## Technologies
+The application enables users to:
 
-- HTML
-- CSS
-- JavaScript
-- Stellar Horizon API
+- View Stellar account information
+- Check XLM balances
+- Display recent transactions
+- Monitor Stellar Testnet accounts through a simple and modern dashboard interface
 
-## Demo
+---
 
-Enter a Stellar public key and click Check Balance.
+## ✨ Features
+
+✅ Stellar Testnet Integration
+
+✅ Wallet Balance Checker
+
+✅ Account Information Viewer
+
+✅ Recent Transaction Viewer
+
+✅ Last Updated Timestamp
+
+✅ Demo Wallet Loader
+
+✅ Responsive and Modern UI
+
+
+
+## 📜 License
+
+This project is open-source and available under the MIT License.
