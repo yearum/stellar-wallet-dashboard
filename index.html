@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Wallet Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>🚀 Stellar Wallet Dashboard</h1>
+
+        <input
+            type="text"
+            id="walletAddress"
+            placeholder="Masukkan Public Key Stellar">
+
+        <div class="button-group">
+            <button onclick="checkBalance()">
+                Check Balance
+            </button>
+
+            <button onclick="copyAddress()">
+                Copy Address
+            </button>
+        </div>
+
+        <div class="result">
+
+            <h3>Account Info</h3>
+            <p id="accountId">-</p>
+
+            <h3>Balance</h3>
+            <p id="balance">-</p>
+
+            <h3>Account Status</h3>
+            <p id="status">-</p>
+
+            <h3>Recent Transactions</h3>
+            <ul id="transactions">
+                <li>-</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

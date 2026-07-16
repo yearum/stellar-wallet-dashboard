@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.container {
+    width: 700px;
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.button-group {
+    text-align: center;
+}
+
+button {
+    margin: 10px;
+    padding: 12px 20px;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.result {
+    margin-top: 25px;
+}
+
+.result p {
+    word-break: break-all;
+}
+
+#transactions {
+    padding-left: 20px;
+}
+
+#transactions li {
+    margin-bottom: 8px;
+    word-break: break-all;
+}
