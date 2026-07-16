@@ -1,46 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stellar Wallet Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <div class="container">
 
-        <h1>🚀 Stellar Wallet Dashboard</h1>
+        <div class="header">
+            <h1>🚀 Stellar Wallet Dashboard</h1>
+            <span class="badge">Stellar Testnet</span>
+        </div>
 
         <input
             type="text"
             id="walletAddress"
             placeholder="Masukkan Public Key Stellar">
 
-        <div class="button-group">
+        <div class="actions">
+
+            <button onclick="loadDemoWallet()">
+                Load Demo Wallet
+            </button>
+
             <button onclick="checkBalance()">
                 Check Balance
             </button>
 
-            <button onclick="copyAddress()">
-                Copy Address
+            <button onclick="resetDashboard()">
+                Reset
             </button>
+
         </div>
 
-        <div class="result">
+        <div class="card">
 
-            <h3>Account Info</h3>
+            <h3>Status</h3>
+            <p id="walletStatus">❌ Belum Dicek</p>
+
+            <h3>Wallet Address</h3>
             <p id="accountId">-</p>
 
             <h3>Balance</h3>
             <p id="balance">-</p>
 
-            <h3>Account Status</h3>
-            <p id="status">-</p>
+            <h3>Last Updated</h3>
+            <p id="lastUpdated">-</p>
+
+        </div>
+
+        <div class="card">
 
             <h3>Recent Transactions</h3>
+
             <ul id="transactions">
-                <li>-</li>
+                <li>No transactions loaded</li>
             </ul>
 
         </div>
@@ -50,4 +70,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>

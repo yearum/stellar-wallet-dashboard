@@ -1,99 +1,142 @@
+function loadDemoWallet() {
+
+    document.getElementById("walletAddress").value =
+        "GC2CWEBHST65DUOZHOYGESNDSK3WWQPTWXGMJMXY6KCJ2KHDACDSWEP4";
+
+    document.getElementById("walletStatus").innerText =
+        "🟢 Demo Wallet Loaded";
+}
+
 async function checkBalance() {
 
-    const wallet = document.getElementById("walletAddress").value.trim();
+    const wallet =
+        document.getElementById("walletAddress").value.trim();
 
     if (!wallet) {
+
         alert("Masukkan Public Key Stellar");
+
         return;
     }
 
     try {
 
-        // ACCOUNT INFO
-        const accountResponse = await fetch(
+        const response = await fetch(
             `https://horizon-testnet.stellar.org/accounts/${wallet}`
         );
 
-        if (!accountResponse.ok) {
+        if (!response.ok) {
             throw new Error("Account tidak ditemukan");
         }
 
-        const accountData = await accountResponse.json();
+        const data = await response.json();
+
+        document.getElementById("walletStatus").innerText =
+            "✅ Account Active";
 
         document.getElementById("accountId").innerText =
-            accountData.account_id;
+            data.account_id;
 
         const nativeBalance =
-            accountData.balances.find(
-                balance => balance.asset_type === "native"
+            data.balances.find(
+                asset => asset.asset_type === "native"
             );
 
         document.getElementById("balance").innerText =
             nativeBalance.balance + " XLM";
 
-        document.getElementById("status").innerText =
-            "✅ Active";
+        document.getElementById("lastUpdated").innerText =
+            new Date().toLocaleString();
 
-        // RECENT TRANSACTIONS
-        const txResponse = await fetch(
-            `https://horizon-testnet.stellar.org/accounts/${wallet}/transactions?limit=5&order=desc`
-        );
-
-        const txData = await txResponse.json();
-
-        const txList = document.getElementById("transactions");
-
-        txList.innerHTML = "";
-
-        if (txData._embedded.records.length === 0) {
-
-            txList.innerHTML =
-                "<li>Tidak ada transaksi.</li>";
-
-        } else {
-
-            txData._embedded.records.forEach(tx => {
-
-                const li = document.createElement("li");
-
-                li.textContent =
-                    `Transaction ID: ${tx.id}`;
-
-                txList.appendChild(li);
-
-            });
-        }
+        loadTransactions(wallet);
 
     } catch (error) {
 
         console.error(error);
 
-        document.getElementById("accountId").innerText = "-";
+        document.getElementById("walletStatus").innerText =
+            "❌ Account Not Found";
+
+        document.getElementById("accountId").innerText =
+            "-";
 
         document.getElementById("balance").innerText =
-            "Account tidak ditemukan";
+            "-";
 
-        document.getElementById("status").innerText =
-            "❌ Not Found";
+        document.getElementById("lastUpdated").innerText =
+            "-";
 
         document.getElementById("transactions").innerHTML =
-            "<li>-</li>";
+            "<li>No transactions found</li>";
     }
 }
 
-function copyAddress() {
+async function loadTransactions(wallet) {
 
-    const wallet =
-        document.getElementById("walletAddress").value;
+    try {
 
-    if (!wallet) {
+        const response = await fetch(
+            `https://horizon-testnet.stellar.org/accounts/${wallet}/transactions?limit=5&order=desc`
+        );
 
-        alert("Masukkan alamat wallet terlebih dahulu");
+        const data = await response.json();
 
-        return;
+        const list =
+            document.getElementById("transactions");
+
+        list.innerHTML = "";
+
+        if (
+            !data._embedded ||
+            data._embedded.records.length === 0
+        ) {
+
+            list.innerHTML =
+                "<li>No transaction found</li>";
+
+            return;
+        }
+
+        data._embedded.records.forEach(tx => {
+
+            const li =
+                document.createElement("li");
+
+            const date =
+                new Date(tx.created_at)
+                    .toLocaleString();
+
+            li.innerText =
+                `${date} | TX ID: ${tx.id}`;
+
+            list.appendChild(li);
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("transactions").innerHTML =
+            "<li>Failed to load transactions</li>";
     }
+}
 
-    navigator.clipboard.writeText(wallet);
+function resetDashboard() {
 
-    alert("✅ Address berhasil disalin");
+    document.getElementById("walletAddress").value = "";
+
+    document.getElementById("walletStatus").innerText =
+        "❌ Belum Dicek";
+
+    document.getElementById("accountId").innerText =
+        "-";
+
+    document.getElementById("balance").innerText =
+        "-";
+
+    document.getElementById("lastUpdated").innerText =
+        "-";
+
+    document.getElementById("transactions").innerHTML =
+        "<li>No transactions loaded</li>";
 }
