@@ -1,20 +1,114 @@
-function loadDemoWallet() {
+import {
+  getAddress,
+  isConnected,
+  requestAccess
+} from "@stellar/freighter-api";
 
-    document.getElementById("walletAddress").value =
-        "GC2CWEBHST65DUOZHOYGESNDSK3WWQPTWXGMJMXY6KCJ2KHDACDSWEP4";
+/* =========================
+   STATE
+========================= */
+
+let currentWallet = null;
+
+/* =========================
+   GLOBAL FUNCTIONS
+========================= */
+
+window.connectWallet = connectWallet;
+window.disconnectWallet = disconnectWallet;
+window.checkBalance = checkBalance;
+window.sendXLM = sendXLM;
+
+/* =========================
+   CONNECT WALLET
+========================= */
+
+async function connectWallet() {
+
+    try {
+
+        console.log("STEP 1");
+
+        console.log("Freighter Object:", window.freighter);
+
+        const access = await requestAccess();
+
+        console.log("STEP 2");
+
+        console.log("ACCESS:", access);
+
+        const result = await getAddress();
+
+        console.log("STEP 3");
+
+        console.log("FULL RESULT:", result);
+
+        if (!result.address) {
+
+            alert("Alamat wallet kosong. Cek Freighter.");
+
+            return;
+        }
+
+        currentWallet = result.address;
+
+        document.getElementById("walletStatus").innerText =
+            "✅ Connected";
+
+        document.getElementById("accountId").innerText =
+            currentWallet;
+
+        await checkBalance();
+
+    } catch(error) {
+
+        console.error("FULL ERROR:", error);
+
+        alert(
+            error?.message ||
+            JSON.stringify(error, null, 2)
+        );
+
+    }
+
+}
+
+/* =========================
+   DISCONNECT
+========================= */
+
+function disconnectWallet() {
+
+    currentWallet = null;
 
     document.getElementById("walletStatus").innerText =
-        "🟢 Demo Wallet Loaded";
+        "❌ Disconnected";
+
+    document.getElementById("accountId").innerText =
+        "-";
+
+    document.getElementById("balance").innerText =
+        "-";
+
+    document.getElementById("lastUpdated").innerText =
+        "-";
+
+    document.getElementById("transactions").innerHTML =
+        "<li>No transactions loaded</li>";
+
+    document.getElementById("txResult").innerText =
+        "";
 }
+
+/* =========================
+   CHECK BALANCE
+========================= */
 
 async function checkBalance() {
 
-    const wallet =
-        document.getElementById("walletAddress").value.trim();
+    if (!currentWallet) {
 
-    if (!wallet) {
-
-        alert("Masukkan Public Key Stellar");
+        alert("Connect wallet terlebih dahulu");
 
         return;
     }
@@ -22,7 +116,7 @@ async function checkBalance() {
     try {
 
         const response = await fetch(
-            `https://horizon-testnet.stellar.org/accounts/${wallet}`
+            `https://horizon-testnet.stellar.org/accounts/${currentWallet}`
         );
 
         if (!response.ok) {
@@ -31,45 +125,33 @@ async function checkBalance() {
 
         const data = await response.json();
 
-        document.getElementById("walletStatus").innerText =
-            "✅ Account Active";
-
-        document.getElementById("accountId").innerText =
-            data.account_id;
-
         const nativeBalance =
             data.balances.find(
                 asset => asset.asset_type === "native"
             );
 
         document.getElementById("balance").innerText =
-            nativeBalance.balance + " XLM";
+            nativeBalance
+                ? nativeBalance.balance + " XLM"
+                : "0 XLM";
 
         document.getElementById("lastUpdated").innerText =
             new Date().toLocaleString();
 
-        loadTransactions(wallet);
+        await loadTransactions(currentWallet);
 
     } catch (error) {
 
         console.error(error);
 
-        document.getElementById("walletStatus").innerText =
-            "❌ Account Not Found";
-
-        document.getElementById("accountId").innerText =
-            "-";
-
         document.getElementById("balance").innerText =
-            "-";
-
-        document.getElementById("lastUpdated").innerText =
-            "-";
-
-        document.getElementById("transactions").innerHTML =
-            "<li>No transactions found</li>";
+            "Error";
     }
 }
+
+/* =========================
+   LOAD TRANSACTIONS
+========================= */
 
 async function loadTransactions(wallet) {
 
@@ -92,7 +174,7 @@ async function loadTransactions(wallet) {
         ) {
 
             list.innerHTML =
-                "<li>No transaction found</li>";
+                "<li>No transactions found</li>";
 
             return;
         }
@@ -103,11 +185,12 @@ async function loadTransactions(wallet) {
                 document.createElement("li");
 
             const date =
-                new Date(tx.created_at)
-                    .toLocaleString();
+                new Date(
+                    tx.created_at
+                ).toLocaleString();
 
             li.innerText =
-                `${date} | TX ID: ${tx.id}`;
+                `${date} | ${tx.hash.substring(0, 20)}...`;
 
             list.appendChild(li);
         });
@@ -121,22 +204,41 @@ async function loadTransactions(wallet) {
     }
 }
 
-function resetDashboard() {
+/* =========================
+   SEND XLM
+========================= */
 
-    document.getElementById("walletAddress").value = "";
+async function sendXLM() {
 
-    document.getElementById("walletStatus").innerText =
-        "❌ Belum Dicek";
+    const destination =
+        document.getElementById("destination").value;
 
-    document.getElementById("accountId").innerText =
-        "-";
+    const amount =
+        document.getElementById("amount").value;
 
-    document.getElementById("balance").innerText =
-        "-";
+    if (!currentWallet) {
 
-    document.getElementById("lastUpdated").innerText =
-        "-";
+        alert("Connect wallet terlebih dahulu");
 
-    document.getElementById("transactions").innerHTML =
-        "<li>No transactions loaded</li>";
+        return;
+    }
+
+    if (!destination || !amount) {
+
+        alert("Isi alamat tujuan dan jumlah XLM");
+
+        return;
+    }
+
+    document.getElementById("txResult").innerText =
+        "🚧 Send XLM feature coming soon";
+
+    /*
+      Tahap berikutnya:
+
+      1. Build Transaction
+      2. Sign Transaction dengan Freighter
+      3. Submit ke Horizon
+      4. Tampilkan Transaction Hash
+    */
 }
