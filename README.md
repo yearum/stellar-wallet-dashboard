@@ -1,38 +1,100 @@
 # 🚀 Stellar Wallet Dashboard
 
-A simple web-based dashboard built on the Stellar Testnet that allows users to check wallet balances and view recent transactions using the Stellar Horizon API.
+A modern Stellar Testnet wallet dashboard built using the Freighter Wallet API and Horizon API.
 
-## 📖 Overview
-
-This project was developed as part of the **Stellar Journey to Mastery - White Belt Level Challenge**.
-
-The application enables users to:
-
-- View Stellar account information
-- Check XLM balances
-- Display recent transactions
-- Monitor Stellar Testnet accounts through a simple and modern dashboard interface
+This project was created as part of the Stellar Journey to Master learning program and demonstrates wallet integration, balance management, transaction monitoring, and Stellar network interaction.
 
 ---
 
 ## ✨ Features
 
-✅ Stellar Testnet Integration
+### 🔗 Wallet Connection
+- Connect Freighter Wallet
+- Disconnect Wallet
+- Display wallet connection status
 
-✅ Wallet Balance Checker
+### 💰 Balance Management
+- Fetch XLM balance from Stellar Testnet
+- Display wallet address
+- Show last update timestamp
 
-✅ Account Information Viewer
+### 📜 Transaction History
+- Load recent wallet transactions
+- Display transaction hashes
+- Display transaction timestamps
 
-✅ Recent Transaction Viewer
+### 🚀 Transaction Flow
+- Prepare Send XLM interface
+- Transaction status handling
+- Ready for Freighter transaction signing integration
 
-✅ Last Updated Timestamp
+### ⚠️ Error Handling
+- Invalid wallet detection
+- Network error handling
+- User-friendly status messages
 
-✅ Demo Wallet Loader
+---
 
-✅ Responsive and Modern UI
+## 🌐 Network
 
+This project uses:
 
+**Stellar Testnet**
 
-## 📜 License
+Horizon Endpoint:
 
-This project is open-source and available under the MIT License.
+```text
+https://horizon-testnet.stellar.org
+```
+
+---
+## ⚙️ Installation
+
+Clone repository:
+
+```bash
+git clone https://github.com/yearum/stellar-wallet-dashboard.git
+```
+
+Enter project directory:
+
+```bash
+cd stellar-wallet-dashboard
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## ▶️ Run Development Server
+
+```bash
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:5173
+```
+
+---
+### Recent Transactions
+
+Display the latest transactions associated with the connected account.
+
+### Send XLM
+
+Transaction workflow prepared for:
+- Build Transaction
+- Sign with Freighter
+- Submit to Horizon
+- Display Transaction Hash
+
+---
+
+Built with Stellar, JavaScript, and Freighter Wallet API.
